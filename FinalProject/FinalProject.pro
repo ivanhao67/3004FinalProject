@@ -16,14 +16,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    battery.cpp \
     main.cpp \
-    mainwindow.cpp
+    main_alt.cpp \
+    mainwindow.cpp \
+    mainwindow_alt.cpp \
+    sessiongroup.cpp \
+    therapy.cpp
 
 HEADERS += \
-    mainwindow.h
+    battery.h \
+    mainwindow.h \
+    mainwindow_alt.h \
+    sessiongroup.h \
+    therapy.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    mainwindow_alt.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -31,4 +41,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    res/oasis.qrc \
     res/res.qrc
