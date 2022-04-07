@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/">
+        <file>overlay/oasisPro.svg</file>
+        <file>buttons/connect.svg</file>
+        <file>buttons/down.svg</file>
+        <file>buttons/history.svg</file>
+        <file>buttons/ok.svg</file>
+        <file>buttons/power.svg</file>
+        <file>buttons/up.svg</file>
+        <file>icons/20mins.svg</file>
+        <file>icons/45mins.svg</file>
+        <file>icons/alpha.svg</file>
+        <file>icons/delta.svg</file>
+        <file>icons/leftCES.svg</file>
+        <file>icons/met.svg</file>
+        <file>icons/rightCES.svg</file>
+        <file>icons/subDelta.svg</file>
+        <file>icons/userDesign.svg</file>
+        <file>icons/_1.svg</file>
+        <file>icons/_2.svg</file>
+        <file>icons/_3.svg</file>
+        <file>icons/_4.svg</file>
+        <file>icons/_5.svg</file>
+        <file>icons/_6.svg</file>
+        <file>icons/_7.svg</file>
+        <file>icons/_8.svg</file>
+    </qresource>
+</RCC>
