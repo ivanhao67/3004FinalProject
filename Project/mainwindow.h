@@ -89,7 +89,6 @@ private slots:
     void changeBatteryLevel(double);
     void rightConnectStatus(int);
     void leftConnectStatus(int);
-
-
+    void changeUserDesignatedLength(int);
 };
 #endif // MAINWINDOW_H

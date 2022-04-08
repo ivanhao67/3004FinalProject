@@ -927,38 +927,38 @@ QPushButton:pressed {
       <rect>
        <x>100</x>
        <y>40</y>
-       <width>54</width>
+       <width>121</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
-      <string>Left</string>
+      <string>Left Clip Connected: </string>
      </property>
     </widget>
     <widget class="QLabel" name="rightConnectLabel">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>90</x>
        <y>90</y>
-       <width>54</width>
+       <width>131</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
-      <string>Right</string>
+      <string>Right Clip Connected: </string>
      </property>
     </widget>
     <widget class="QLabel" name="BatteryLevelLabel">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>130</x>
        <y>140</y>
        <width>81</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>Battery Level</string>
+      <string>Battery Level: </string>
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="batteryLevelSpinBox">
@@ -987,13 +987,45 @@ QPushButton:pressed {
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>220</y>
+       <y>260</y>
        <width>54</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
       <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="UserDesignatedLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>190</y>
+       <width>191</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>User Designated Length (mins):</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="userLengthSpinBox">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>190</y>
+       <width>45</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
+     </property>
+     <property name="value">
+      <number>60</number>
      </property>
     </widget>
    </widget>

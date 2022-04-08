@@ -64,6 +64,12 @@ MainWindow::MainWindow(QWidget *parent)
     }
     groups.append(s1);
 
+    SessionGroup* userDesignated = new SessionGroup(60);
+    for(int i=0; i<4;i++){
+        userDesignated->addTherapy(new Therapy(i, i*2+2, 60*60));
+    }
+    groups.append(userDesignated);
+
     changePowerStatu();
 
     records.append(new Therapy(0, 5, 15));
@@ -79,6 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->batteryLevelSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::changeBatteryLevel);
     connect(ui->leftConnectSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::leftConnectStatus);
     connect(ui->rightConnectSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::rightConnectStatus);
+    connect(ui->userLengthSpinBox,  QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::changeUserDesignatedLength);
     connect(ui->historyButton, &QPushButton::pressed, this, &MainWindow::viewRecording);
 }
 
@@ -201,7 +208,7 @@ void MainWindow::selectSessionGroup()
     historyIndex = 0;
     currentTherapyIntentisy = 0;
     durations[currentTherapyGroup]->setStyleSheet("background-color: transparent;");
-    currentTherapyGroup = (currentTherapyGroup+1)%2;
+    currentTherapyGroup = (currentTherapyGroup+1)%3;
     durations[currentTherapyGroup]->setStyleSheet("background-color: rgb(255, 255, 0);");
 
     sessions[currentTherapyType]->setStyleSheet("background-color: transparent;");
@@ -462,6 +469,19 @@ void MainWindow::leftConnectStatus(int n)
 {
     leftConnect = n;
     cout << leftConnect << endl;
+}
+
+void MainWindow::changeUserDesignatedLength(int newLength)
+{
+    groups.pop_back();
+
+    SessionGroup* userDesignated = new SessionGroup(newLength);
+    for(int i=0; i<4;i++){
+        userDesignated->addTherapy(new Therapy(i, i*2+2, 60*newLength));
+    }
+    groups.append(userDesignated);
+
+    cout << "Changed User designated length, new time: " << newLength << endl;
 }
 
 void MainWindow::viewRecording()
