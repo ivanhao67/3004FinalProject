@@ -54,19 +54,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     SessionGroup* s = new SessionGroup(20);
     for(int i=0; i<4;i++){
-        s->addTherapy(new Therapy(i, i*2+2, 1500));
+        s->addTherapy(new Therapy(i, i*2+1, 1500));
     }
     groups.append(s);
 
     SessionGroup* s1 = new SessionGroup(45);
     for(int i=0; i<4;i++){
-        s1->addTherapy(new Therapy(i, i*2+2, 2700));
+        s1->addTherapy(new Therapy(i, i*2+1, 2700));
     }
     groups.append(s1);
 
     SessionGroup* userDesignated = new SessionGroup(60);
     for(int i=0; i<4;i++){
-        userDesignated->addTherapy(new Therapy(i, i*2+2, 60*60));
+        userDesignated->addTherapy(new Therapy(i, i*2+1, 60*60));
     }
     groups.append(userDesignated);
 
@@ -305,33 +305,35 @@ void MainWindow::connectWait() {
 void MainWindow::updateTimer() {
     cout << "updateTimer" << endl;
     if(therapyTime >=0 && !earlyStop){
-        therapyTime--;
-        QString timeString = QString::number(therapyTime/60) + ((therapyTime%60 < 10) ? + ":0" + QString::number(therapyTime%60) : + ":" + QString::number(therapyTime%60));
-        ui->leftTime->setText(timeString);
+        if(connectTest() >= 0){
+            therapyTime--;
+            QString timeString = QString::number(therapyTime/60) + ((therapyTime%60 < 10) ? + ":0" + QString::number(therapyTime%60) : + ":" + QString::number(therapyTime%60));
+            ui->leftTime->setText(timeString);
 
-        if(currentTherapyIntentisy > userTherapyIntentisy){
-            currentTherapyIntentisy--;
-            battery->setILvl(currentTherapyIntentisy);
-            drawIntentisyLevel(0,currentTherapyIntentisy+1);
-        }else if (currentTherapyIntentisy < userTherapyIntentisy){
-            drawIntentisyLevel(0,currentTherapyIntentisy+1);
-            currentTherapyIntentisy++;
-            battery->setILvl(currentTherapyIntentisy);
-        }
-        double batteryLevel = battery->getBLvl();
-        batteryLevel -= battery->getILvl()*0.1;
-        changeBatteryLevel(batteryLevel);
-        if(therapyTime%60 >=0 && therapyTime%60 <=5){
-            drawIntentisyLevel(0,ceil(batteryLevel/12.5));
-        }else{
-            if(batteryLevel > 25){
+            if(currentTherapyIntentisy > userTherapyIntentisy){
+                currentTherapyIntentisy--;
+                battery->setILvl(currentTherapyIntentisy);
                 drawIntentisyLevel(0,currentTherapyIntentisy+1);
-            }else{
-                lowBattery();
+            }else if (currentTherapyIntentisy < userTherapyIntentisy){
+                drawIntentisyLevel(0,currentTherapyIntentisy+1);
+                currentTherapyIntentisy++;
+                battery->setILvl(currentTherapyIntentisy);
             }
-        }
-        if(batteryLevel <= 7){
-            earlyStop = true;
+            double batteryLevel = battery->getBLvl();
+            batteryLevel -= battery->getILvl()*0.1;
+            changeBatteryLevel(batteryLevel);
+            if(therapyTime%60 >=0 && therapyTime%60 <=5){
+                drawIntentisyLevel(0,ceil(batteryLevel/12.5));
+            }else{
+                if(batteryLevel > 25){
+                    drawIntentisyLevel(0,currentTherapyIntentisy+1);
+                }else{
+                    lowBattery();
+                }
+            }
+            if(batteryLevel <= 7){
+                earlyStop = true;
+            }
         }
 
     }else{
@@ -393,6 +395,7 @@ void MainWindow::changeBatteryLevel(double newLevel){
         }
     }
     ui->batteryLevelSpinBox->setValue(newLevel);
+    drawIntentisyLevel(0,ceil(newLevel/12.5));
 }
 
 void MainWindow::lowBattery()
@@ -477,7 +480,7 @@ void MainWindow::changeUserDesignatedLength(int newLength)
 
     SessionGroup* userDesignated = new SessionGroup(newLength);
     for(int i=0; i<4;i++){
-        userDesignated->addTherapy(new Therapy(i, i*2+2, 60*newLength));
+        userDesignated->addTherapy(new Therapy(i, i*2+1, 60*newLength));
     }
     groups.append(userDesignated);
 
