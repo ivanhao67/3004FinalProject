@@ -113,7 +113,7 @@ void MainWindow::updatePowTimer()
 
 /*!
  * \brief MainWindow::PowerOnOffOrEndSession slot that receives a signal when power button is released. Causes the power to turn on or off,
- *                                           or if a session is in progress it ends the session.
+ *                                           select selection group or if a session is in progress it ends the session.
  */
 void MainWindow::PowerOnOffOrEndSession()
 {
@@ -141,7 +141,6 @@ void MainWindow::changePowerStatu()
     ui->upButton->setEnabled(powerStatus);
     ui->downButton->setEnabled(powerStatus);
     ui->okButton->setEnabled(powerStatus);
-    ui->connectButton->setEnabled(powerStatus);
     ui->historyButton->setEnabled(powerStatus);
 
     if(isTherapy){
@@ -180,7 +179,7 @@ void MainWindow::endSession()
     cout << "end a session" << endl;
 
     if(saveHistory){
-        records.append(new Therapy(currentTherapyType, userTherapyIntentisy, therapyTime));
+        records.append(new Therapy(currentTherapyType, userTherapyIntentisy, currentTherapy->getDuration()-therapyTime));
         saveHistory = false;
     }
 
@@ -210,6 +209,7 @@ void MainWindow::endSession()
     leftConnect = 0;
     rightConnect = 0;
     earlyStop = false;
+    ui->leftTime->setText("");
 }
 
 /*!
@@ -235,12 +235,14 @@ void MainWindow::selectSessionGroup()
     currentTherapyType = groups[currentTherapyGroup]->getType(currentTherapyIndex);;
     sessions[currentTherapyType]->setStyleSheet("background-color: rgb(255, 255, 0);");
 
+    ui->leftTime->setText("");
 
 }
 
 
 /*!
- * \brief MainWindow::selectSessionUp slot that receives a signal when device up arrow pressed. Causes the selected session to change.
+ * \brief MainWindow::selectSessionUp slot that receives a signal when device up arrow pressed. Causes the selected session to change
+ *                                                                  or change intentisy if in therapy.
  */
 void MainWindow::selectSessionUp()
 {
@@ -257,7 +259,8 @@ void MainWindow::selectSessionUp()
 }
 
 /*!
- * \brief MainWindow::selectSessionDown slot that receives a signal when device down arrow pressed. Causes the selected session to change.
+ * \brief MainWindow::selectSessionDown slot that receives a signal when device down arrow pressed. Causes the selected session to change
+ *                                                                 or change intentisy if in therapy.
  */
 void MainWindow::selectSessionDown()
 {
@@ -339,7 +342,7 @@ void MainWindow::connectWait() {
  */
 void MainWindow::updateTimer() {
     cout << "updateTimer" << endl;
-    if(therapyTime >=0 && !earlyStop){
+    if(therapyTime >0 && !earlyStop){
         if(connectTest() >= 0){
             therapyTime--;
             QString timeString = QString::number(therapyTime/60) + ((therapyTime%60 < 10) ? + ":0" + QString::number(therapyTime%60) : + ":" + QString::number(therapyTime%60));
@@ -577,6 +580,9 @@ void MainWindow::viewRecording()
         sessions[currentTherapyType]->setStyleSheet("background-color: transparent;");
         currentTherapyType = t->getType();
         sessions[currentTherapyType]->setStyleSheet("background-color: rgb(255, 255, 0);");
+        int Dtime = t->getDuration();
+        QString timeString = QString::number(Dtime/60) + ((Dtime%60 < 10) ? + ":0" + QString::number(Dtime%60) : + ":" + QString::number(Dtime%60));
+        ui->leftTime->setText(timeString);
     }
 }
 

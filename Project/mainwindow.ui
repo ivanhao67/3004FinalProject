@@ -214,42 +214,6 @@ QPushButton:pressed {
       <string/>
      </property>
     </widget>
-    <widget class="QPushButton" name="connectButton">
-     <property name="geometry">
-      <rect>
-       <x>440</x>
-       <y>310</y>
-       <width>40</width>
-       <height>40</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>40</width>
-       <height>40</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>40</width>
-       <height>40</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-image: url(:/buttons/connect.svg);
-background-color: #ffffff;
-border-radius: 20px;
-}
-
-QPushButton:pressed {
-	background-color: #ffd300;
-}</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
     <widget class="QLabel" name="_20mins">
      <property name="geometry">
       <rect>
@@ -847,7 +811,6 @@ QPushButton:pressed {
     <zorder>downButton</zorder>
     <zorder>powerButton</zorder>
     <zorder>historyButton</zorder>
-    <zorder>connectButton</zorder>
     <zorder>_20mins</zorder>
     <zorder>_45mins</zorder>
     <zorder>userDesign</zorder>
