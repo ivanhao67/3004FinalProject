@@ -94,17 +94,27 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+/*!
+ * \brief MainWindow::startPowTimer a slot that starts a timer on signal to track how long the power buttons been held
+ */
 void MainWindow::startPowTimer()
 {
     connect(power_timer, &QTimer::timeout, this, &MainWindow::updatePowTimer);
     power_timer->start(1000);
 }
 
+/*!
+ * \brief MainWindow::updatePowTimer slot that increaments the power timer on signal
+ */
 void MainWindow::updatePowTimer()
 {
     power_count++;
 }
 
+/*!
+ * \brief MainWindow::PowerOnOffOrEndSession slot that receives a signal when power button is released. Causes the power to turn on or off,
+ *                                           or if a session is in progress it ends the session.
+ */
 void MainWindow::PowerOnOffOrEndSession()
 {
     power_timer->stop();
@@ -123,6 +133,9 @@ void MainWindow::PowerOnOffOrEndSession()
     }
 }
 
+/*!
+ * \brief MainWindow::changePowerStatu function enables or disables the interface on power status change and performs turn off actions if required.
+ */
 void MainWindow::changePowerStatu()
 {
     ui->upButton->setEnabled(powerStatus);
@@ -159,6 +172,9 @@ void MainWindow::changePowerStatu()
     }
 }
 
+/*!
+ * \brief MainWindow::endSession function that ends a session.
+ */
 void MainWindow::endSession()
 {
     cout << "end a session" << endl;
@@ -196,6 +212,9 @@ void MainWindow::endSession()
     earlyStop = false;
 }
 
+/*!
+ * \brief MainWindow::selectSessionGroup function that changes the selected session group when device is on and power button is pressed.
+ */
 void MainWindow::selectSessionGroup()
 {
     cout << "selectSessionGroup" << endl;
@@ -219,6 +238,10 @@ void MainWindow::selectSessionGroup()
 
 }
 
+
+/*!
+ * \brief MainWindow::selectSessionUp slot that receives a signal when device up arrow pressed. Causes the selected session to change.
+ */
 void MainWindow::selectSessionUp()
 {
     cout << "selectSessionUp" << endl;
@@ -233,6 +256,9 @@ void MainWindow::selectSessionUp()
     }
 }
 
+/*!
+ * \brief MainWindow::selectSessionDown slot that receives a signal when device down arrow pressed. Causes the selected session to change.
+ */
 void MainWindow::selectSessionDown()
 {
     cout << "selectSessionDown" << endl;
@@ -247,6 +273,9 @@ void MainWindow::selectSessionDown()
     }
 }
 
+/*!
+ * \brief MainWindow::startTherapy slot that receives a signal when device ok button pressed. Starts a therapy by first starting a connection test.
+ */
 void MainWindow::startTherapy()
 {
     cout << "startTherapy" << endl;
@@ -256,11 +285,14 @@ void MainWindow::startTherapy()
             temp_timer->disconnect();
         }
         isTherapy = true;
-        connect(temp_timer, &QTimer::timeout, this, &MainWindow::connectWait);
+        connect(temp_timer, &QTimer::timeout, this, &MainWindow::connectWait); //start connection test
         temp_timer->start(500);
     }
 }
 
+/*!
+ * \brief MainWindow::connectWait slot that receives a signal from the connection test timer. Checks connection on tick and starts therapy timer after 10 ticks.
+ */
 void MainWindow::connectWait() {
     cout << "connectWait" << endl;
     connect_wait_count++;
@@ -302,6 +334,9 @@ void MainWindow::connectWait() {
     }
 }
 
+/*!
+ * \brief MainWindow::updateTimer slot that receives a signal from the therapy timer. draws power from battery on tick and updates displayed therapy duration remaining.
+ */
 void MainWindow::updateTimer() {
     cout << "updateTimer" << endl;
     if(therapyTime >=0 && !earlyStop){
@@ -344,6 +379,10 @@ void MainWindow::updateTimer() {
     }
 }
 
+/*!
+ * \brief MainWindow::softOff function that decrements intensity on call. returns true once intensity reaches 0.
+ * \return bool, true when intensity = 0
+ */
 bool MainWindow::softOff(){
     if(currentTherapyIntentisy>0){
         currentTherapyIntentisy--;
@@ -352,6 +391,9 @@ bool MainWindow::softOff(){
     return currentTherapyIntentisy == 0;
 }
 
+/*!
+ * \brief MainWindow::drawIntensityLevel function that changes the output of the device graph to the current intensity level.
+ */
 void MainWindow::drawIntentisyLevel(int m, int n)
 {
     for(int i=m; i<n;i++){
@@ -382,6 +424,10 @@ void MainWindow::drawIntentisyLevel(int m, int n)
     }
 }
 
+/*!
+ * \brief MainWindow::changebatteryLevel slot that receives a signal from the battery level spin box. changes the battery charge level to the new value.
+ * \param newLevel double, the new battery charge level
+ */
 void MainWindow::changeBatteryLevel(double newLevel){
     cout << battery->getILvl() << endl;
     cout << battery->getBLvl() << endl;
@@ -398,6 +444,9 @@ void MainWindow::changeBatteryLevel(double newLevel){
     drawIntentisyLevel(0,ceil(newLevel/12.5));
 }
 
+/*!
+ * \brief MainWindow::lowBattery function that displays low power warnings.
+ */
 void MainWindow::lowBattery()
 {
     if(battery->getBLvl() < 25){
@@ -424,6 +473,9 @@ void MainWindow::lowBattery()
     }
 }
 
+/*!
+ * \brief MainWindow::lowpowWarning function that displays low power warnings.
+ */
 void MainWindow::lowPowWarning()
 {
     if(battery->getBLvl() < 25){
@@ -455,6 +507,10 @@ void MainWindow::lowPowWarning()
     }
 }
 
+/*!
+ * \brief MainWindow::connectTest function that returns the connection status of the ear clips.
+ * \return int, status of connection -1 = bad, 0 = okay, 1 = excellent
+ */
 int MainWindow::connectTest()
 {
     if(ui->leftConnectSpinBox->value() == -1 || ui->rightConnectSpinBox->value() == -1) return -1;
@@ -462,18 +518,30 @@ int MainWindow::connectTest()
     if(ui->leftConnectSpinBox->value() == 1 && ui->rightConnectSpinBox->value() == 1) return 1;
 }
 
+/*!
+ * \brief MainWindow::rightConnectStatus slot that updates the right ear clips connection status on signal from right ear clip spin box.
+ * \param n int, status of connection -1 = bad, 0 = okay, 1 = excellent
+ */
 void MainWindow::rightConnectStatus(int n)
 {
     rightConnect = n;
     cout << rightConnect << endl;
 }
 
+/*!
+ * \brief MainWindow::leftConnectStatus slot that updates the left ear clips connection status on signal from left ear clip spin box.
+ * \param n int, status of connection -1 = bad, 0 = okay, 1 = excellent
+ */
 void MainWindow::leftConnectStatus(int n)
 {
     leftConnect = n;
     cout << leftConnect << endl;
 }
 
+/*!
+ * \brief MainWindow::changeUserDesignatedLength slot that updates the user designated session length on signal from spin box.
+ * \param newLength int, new duration in minutes
+ */
 void MainWindow::changeUserDesignatedLength(int newLength)
 {
     groups.pop_back();
@@ -487,6 +555,10 @@ void MainWindow::changeUserDesignatedLength(int newLength)
     cout << "Changed User designated length, new time: " << newLength << endl;
 }
 
+
+/*!
+ * \brief MainWindow::changeUserDesignatedLength slot that replays a recorded session.
+ */
 void MainWindow::viewRecording()
 {
     cout << "viewRecording" << endl;
